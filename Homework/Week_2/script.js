@@ -11,7 +11,7 @@ for (i = 0; i < weather_info.length - 1; i++){
 
   // split commas for each line
   weather_info[i] = weather_info[i].split(',');
-
+// test
   // push dates into dates array
   dates.push(weather_info[i][0])
 
