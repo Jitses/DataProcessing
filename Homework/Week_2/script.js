@@ -144,7 +144,7 @@ ctx.moveTo(0, 0);
 for (i = 0; i < dates.length - 1; i++)
 {
   // move line to correct temperature and date positions
-  ctx.lineTo(scale_x(dates[i]), scale_y(1*temp[i]))
+  ctx.lineTo(scale_x(dates[i]), scale_y(temp[i]))
 }
 
 // draw line graph
@@ -184,59 +184,3 @@ for (i = date_domain[0] - 1; i <= date_domain[1]; i += 15){
 
 // draw
 ctx.stroke()
-
-
-// temp_difference_min_max = temp_min_max[1] - temp_min_max[0];
-
-// // create vertical scale for grid
-// vertical_scale = ((canvas.height - 50) / temp_difference_min_max);
-// console.log(vertical_scale)
-//
-// // create horizontal scale for grid
-// horizontal_scale = ((canvas.width - 50) / 365)
-//
-// console.log(temp_difference_min_max)
-//
-// // begin line path
-// ctx.beginPath();
-//
-// console.log(temp_min_max[1])
-// // move to start
-// ctx.moveTo(0, 0);
-//
-// // draw vertical grid line with 10 degrees added each time
-// for (i = temp_min_max[0]; i <= temp_min_max[1]; i += 16){
-//   ctx.lineTo(0, (vertical_scale * i) - (temp_min_max[0] * vertical_scale));
-//   ctx.lineTo(5, (vertical_scale * i) - (temp_min_max[0] * vertical_scale));
-//   ctx.fillText(i, 5, (vertical_scale * i) - (temp_min_max[0] * vertical_scale));
-//   console.log(vertical_scale * i);
-//   ctx.moveTo(0, (vertical_scale * i));
-// }
-//
-// // move to starting point horizontal grid line
-// ctx.moveTo(0, vertical_scale * (0 - temp_min_max[0]));
-//
-// // draw horizontal grid line with 10 degrees added each time
-// for (i = 0; i <= 365; i += 30){
-//   ctx.lineTo(horizontal_scale * i, vertical_scale * (0 - temp_min_max[0]));
-//   ctx.lineTo(horizontal_scale * i, vertical_scale * (0 - temp_min_max[0]) + 5);
-//   ctx.fillText(i,horizontal_scale * i, vertical_scale * (0 - temp_min_max[0]) + 10);
-//   ctx.moveTo(i, vertical_scale * (0 - temp_min_max[0]));
-// }
-//
-// ctx.stroke();
-//
-// // retrieved from https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
-// ctx.beginPath();
-//
-// // start of line graph
-// ctx.moveTo(horizontal_scale * date_min_max[0], vertical_scale * temp_min_max[0]);
-//
-// // iterate over arrays
-// for (i = 0; i < dates.length - 1; i++)
-// {
-//   // move line to correct temperature and date positions
-//   ctx.lineTo(horizontal_scale * dates[i], vertical_scale* temp[i])
-// }
-// // draw line graph
-// ctx.stroke();
