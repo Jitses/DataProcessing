@@ -18,7 +18,7 @@
 // }
 //
 // var weather_info = readTextFile("file:///Users/Jitse/Desktop/DataProcessing/Homework/Week_2/KNMI_20171231.txt");
-
+//
 // // split into lines
 var weather_info = document.getElementById("rawdata").innerHTML.split('\n');
 
@@ -108,8 +108,8 @@ canvas.width = 800;
 canvas.height = 500;
 
 var ctx = canvas.getContext('2d');
-ctx.transform(1, 0, 0, -1, 0, canvas.height);
-// ctx.translate(0, 500)
+// ctx.transform(1, 0, 0, -1, 0, canvas.height);
+ctx.translate(0, 500)
 // ctx.scale(1, -1)
 
 // create temperature range array
@@ -144,9 +144,9 @@ ctx.moveTo(0, 0);
 for (i = 0; i < dates.length - 1; i++)
 {
   // move line to correct temperature and date positions
-  ctx.lineTo(scale_x(dates[i]), scale_y(temp[i]))
-}
+  ctx.lineTo(scale_x(dates[i]), -scale_y(temp[i]))
 
+}
 // draw line graph
 ctx.stroke();
 
@@ -157,30 +157,37 @@ ctx.beginPath();
 ctx.moveTo(0, 0);
 
 // draw vertical grid line with 10 degrees added each time
-for (i = - 40; i <= 240; i += 8){
-  ctx.lineTo(0, scale_y(i));
+for (i = - 40; i <= 240; i += 10){
+  ctx.lineTo(0, -scale_y(i));
 
   // draw horizontal
-  ctx.lineTo(5, scale_y(i));
+  ctx.lineTo(5, -scale_y(i));
 
   // write temperature
-  temperature = ctx.fillText(i, scale_x(5), scale_y(i));
+  temperature = ctx.fillText(i, scale_x(5), -scale_y(i));
   // move back to vertical grid
-  ctx.moveTo(0, scale_y(i));
+  ctx.moveTo(0, -scale_y(i));
 }
 // draw horizontal grid line with 10 degrees added each time
-for (i = date_domain[0] - 1; i <= date_domain[1]; i += 15){
-  ctx.lineTo(scale_x(i), scale_y(0));
+for (i = date_domain[0] - 1; i <= date_domain[1]; i += 10){
+  ctx.lineTo(scale_x(i), -scale_y(0));
 
   // draw vertical stripe
-  ctx.lineTo(scale_x(i), scale_y(5));
+  ctx.lineTo(scale_x(i), -scale_y(5));
 
   // write date
-  ctx.fillText(Math.round(i), scale_x(i), scale_y(10));
+  ctx.fillText(Math.round(i), scale_x(i), -scale_y(10));
 
   // move back to horizontal grid line
-  ctx.moveTo(scale_x(i), scale_y(0));
+  ctx.moveTo(scale_x(i), -scale_y(0));
 }
+
+ctx.lineTo(scale_x(365), -scale_y(0));
+
+// draw vertical stripe
+ctx.lineTo(scale_x(365), -scale_y(-5));
+ctx.fillText(365, scale_x(365), -scale_y(-10))
+
 
 // draw
 ctx.stroke()
