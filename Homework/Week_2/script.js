@@ -1,4 +1,4 @@
-// https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/onreadystatechange
+// retrieved from https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/onreadystatechange
 var xhr = new XMLHttpRequest(),
     method = "GET",
     url = "https://raw.githubusercontent.com/Jitses/DataProcessing/master/Homework/Week_2/KNMI_20171231.txt";
@@ -7,19 +7,19 @@ xhr.open(method, url, true);
 xhr.onreadystatechange = function () {
   if(xhr.readyState === 4 && xhr.status === 200) {
 
-
+    // set weather info to responsetext
     var weather_info = xhr.responseText;
-    
+
+    // split newlines
     weather_info = weather_info.split('\n');
 
-
-    console.log(weather_info);
     // create empty array for temperatures
     temp = [];
 
     // create empty array for dates
     dates = [];
 
+    // iterate over weather info
     for (i = 0; i < weather_info.length - 1; i++){
 
       // split commas for each line
@@ -45,8 +45,9 @@ xhr.onreadystatechange = function () {
       // convert to date
       dates[i] = new Date(dates_string);
 
-      // retrieved from https://stackoverflow.com/questions/8619879/javascript-calculate-the-day-of-the-year-1-366
-      // sets days from 1-365
+      /** retrieved from https://stackoverflow.com/questions/8619879/javascript-calculate-the-day-of-the-year-1-366
+       * sets days from 1-365
+       */
       var start = new Date(dates[i].getFullYear(), 0, 0);
       var diff = (dates[i] - start) + ((start.getTimezoneOffset() - dates[i].getTimezoneOffset()) * 60 * 1000);
       var oneDay = 1000 * 60 * 60 * 24;
@@ -65,16 +66,17 @@ xhr.onreadystatechange = function () {
     // make empty array
     date_domain = []
 
-    // store minimum date
+    // store minimum date in date_domain
     date_domain.push(Math.min(...dates));
 
-    // store maximum date
+    // store maximum date in date_domain
     date_domain.push(Math.max(...dates));
 
     function createTransform(domain, range){
 
-    	// domain is a two-element array of the data bounds [domain_min, domain_max]
-    	// range is a two-element array of the screen bounds [range_min, range_max]
+    	/** domain is a two-element array of the data bounds [domain_min, domain_max]
+    	 * range is a two-element array of the screen bounds [range_min, range_max]
+       */
         var domain_min = domain[0]
         var domain_max = domain[1]
         var range_min = range[0]
@@ -100,9 +102,8 @@ xhr.onreadystatechange = function () {
     canvas.height = 500;
 
     var ctx = canvas.getContext('2d');
-    // ctx.transform(1, 0, 0, -1, 0, canvas.height);
-    ctx.translate(0, 500)
-    // ctx.scale(1, -1)
+
+    ctx.translate(0, 500);
 
     // create temperature range array
     range_temp = [];
@@ -156,10 +157,12 @@ xhr.onreadystatechange = function () {
       ctx.lineTo(5, -scale_y(i));
 
       // write temperature
-      temperature = ctx.fillText(i, scale_x(5), -scale_y(i));
+      ctx.fillText(i, scale_x(5), -scale_y(i));
+
       // move back to vertical grid
       ctx.moveTo(0, -scale_y(i));
     }
+
     // draw horizontal grid line with 10 degrees added each time
     for (i = date_domain[0] - 1; i <= date_domain[1]; i += 10){
       ctx.lineTo(scale_x(i), -scale_y(0));
