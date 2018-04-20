@@ -1,23 +1,4 @@
-// retrieved from https://stackoverflow.com/questions/7683596/xmlhttprequest-for-local-files
-// function readTextFile(file)
-// {
-//     var rawFile = new XMLHttpRequest();
-//     rawFile.open("GET", file, false);
-//     rawFile.onreadystatechange = function ()
-//     {
-//         if(rawFile.readyState === 4)
-//         {
-//             if(rawFile.status === 200 || rawFile.status == 0)
-//             {
-//                 var allText = rawFile.responseText;
-//                 alert(allText);
-//             }
-//         }
-//     }
-//     rawFile.send(null);
-// }
-// var weather_info = readTextFile("file:///Users/Jitse/Desktop/DataProcessing/Homework/Week_2/KNMI_20171231.txt");
-
+// https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/onreadystatechange
 var xhr = new XMLHttpRequest(),
     method = "GET",
     url = "https://raw.githubusercontent.com/Jitses/DataProcessing/master/Homework/Week_2/KNMI_20171231.txt";
