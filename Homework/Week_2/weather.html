@@ -6,15 +6,19 @@
     </title>
   </head>
   <body>
-    <div style="margin: 0px 0px -80px 120px">
+    <div style="display: inline-block; margin-left: 40px;">
     <h1> Average Temperature De Bilt (2017) </h1>
     <p> By Jitse Schol </p>
     <a href= "http://projects.knmi.nl/klimatologie/daggegevens/selectie.cgi"> Source: KNMI</a>
     </div>
+    <div style="display: inline-block; margin-left: -300px;">
+      <h3> x-axis: days in the year 2017 (1-365) </h3>
+      <h3> y-axis: temperature in 0.10 degrees celcius</h3>
+    </div>
     <!-- YYYYMMDD = Date (YYYY=year MM=month DD=day)-->
     <!-- TG = Daily average temperature (in 0.1 degrees Celsius)-->
     <!-- YYYYMMDD,   TG -->
-    <div style="margin: 100px">
+    <div style="margin-left: 40px;">
       <canvas id="myCanvas"></canvas>
       <textarea id="rawdata" style="display: none">
         20170101,    5
