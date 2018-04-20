@@ -6,11 +6,14 @@ var xhr = new XMLHttpRequest(),
 xhr.open(method, url, true);
 xhr.onreadystatechange = function () {
   if(xhr.readyState === 4 && xhr.status === 200) {
-    console.log(xhr.responseText);
-    // // split into lines
-    // var weather_info = document.getElementById("rawdata").innerHTML.split('\n');
 
-    var weather_info = xhr.responseText.split('/n');
+
+    var weather_info = xhr.responseText;
+    
+    weather_info = weather_info.split('\n');
+
+
+    console.log(weather_info);
     // create empty array for temperatures
     temp = [];
 
@@ -184,9 +187,5 @@ xhr.onreadystatechange = function () {
     ctx.stroke()
   }
 };
-
-
-
-
 
 xhr.send();
