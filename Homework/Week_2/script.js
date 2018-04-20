@@ -1,4 +1,25 @@
-// split into lines
+// retrieved from https://stackoverflow.com/questions/7683596/xmlhttprequest-for-local-files
+// function readTextFile(file)
+// {
+//     var rawFile = new XMLHttpRequest();
+//     rawFile.open("GET", file, false);
+//     rawFile.onreadystatechange = function ()
+//     {
+//         if(rawFile.readyState === 4)
+//         {
+//             if(rawFile.status === 200 || rawFile.status == 0)
+//             {
+//                 var allText = rawFile.responseText;
+//                 alert(allText);
+//             }
+//         }
+//     }
+//     rawFile.send(null);
+// }
+//
+// var weather_info = readTextFile("file:///Users/Jitse/Desktop/DataProcessing/Homework/Week_2/KNMI_20171231.txt");
+
+// // split into lines
 var weather_info = document.getElementById("rawdata").innerHTML.split('\n');
 
 // create empty array for temperatures
@@ -11,50 +32,211 @@ for (i = 0; i < weather_info.length - 1; i++){
 
   // split commas for each line
   weather_info[i] = weather_info[i].split(',');
-// test
+
   // push dates into dates array
   dates.push(weather_info[i][0])
 
   // push temperatures to temp array
   temp.push(weather_info[i][1]);
 
+  // strip whitespace
+  dates[i] = dates[i].trim();
+
   // idea retrieved from https://stackoverflow.com/questions/10607935/convert-returned-string-yyyymmdd-to-date
-  var year        = dates[i].substring(0,3);
-  console.log(dates[i]);
-  var month       = dates[i].substring(4,5) - 1;
-  var day         = dates[i].substring(6,7);
-  dates_string        = year + '-' + month + '-' + day;
-  console.log(dates_string)
-  dates[i]        = new Date(dates_string);
+  var year = dates[i].substring(0,4);
+  var month = dates[i].substring(4,6);
+  var day = dates[i].substring(6,8);
+
+  // put - between year, month and date
+  dates_string = year + '-' + month + '-' + day;
+
+  // convert to date
+  dates[i] = new Date(dates_string);
+
+  // retrieved from https://stackoverflow.com/questions/8619879/javascript-calculate-the-day-of-the-year-1-366
+  // sets days from 1-365
+  var start = new Date(dates[i].getFullYear(), 0, 0);
+  var diff = (dates[i] - start) + ((start.getTimezoneOffset() - dates[i].getTimezoneOffset()) * 60 * 1000);
+  var oneDay = 1000 * 60 * 60 * 24;
+  dates[i] = Math.floor(diff / oneDay);
 }
 
-console.log(dates);
-console.log(temp);
+// make empty array
+temp_domain = []
+
+// store minimum temperature in array
+temp_domain.push(Math.min(...temp));
+
+// store maximum temperature in array
+temp_domain.push(Math.max(...temp));
+
+// make empty array
+date_domain = []
+
+// store minimum date
+date_domain.push(Math.min(...dates));
+
+// store maximum date
+date_domain.push(Math.max(...dates));
+
+function createTransform(domain, range){
+
+	// domain is a two-element array of the data bounds [domain_min, domain_max]
+	// range is a two-element array of the screen bounds [range_min, range_max]
+    var domain_min = domain[0]
+    var domain_max = domain[1]
+    var range_min = range[0]
+    var range_max = range[1]
+
+    // formulas to calculate the alpha and the beta
+   	var alpha = (range_max - range_min) / (domain_max - domain_min)
+    var beta = range_max - alpha * domain_max
+
+    // returns the function for the linear transformation (y= a * x + b)
+    return function(x){
+      return alpha * x + beta;
+    }
+}
 
 // retrieved from https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
 var canvas = document.getElementById('myCanvas');
+
+// set canvas width
+canvas.width = 800;
+
+// set canvas height
+canvas.height = 500;
+
 var ctx = canvas.getContext('2d');
+ctx.transform(1, 0, 0, -1, 0, canvas.height);
+// ctx.translate(0, 500)
+// ctx.scale(1, -1)
+
+// create temperature range array
+range_temp = [];
+
+// push 0 into range_temp array
+range_temp.push(0);
+
+// push canvas height into range_y array
+range_temp.push(canvas.height - 30);
+
+// create date range array
+range_date = [];
+
+// push 0 into range_date array
+range_date.push(0);
+
+// push canvas width in to range x_array
+range_date.push(canvas.width - 30);
+
+// calculate scales by using createtransform function
+scale_y = createTransform(temp_domain, range_temp);
+scale_x = createTransform(date_domain, range_date);
+
+// retrieved from https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
+ctx.beginPath();
+
+// start of line graph
+ctx.moveTo(0, 0);
+
+// iterate over arrays
+for (i = 0; i < dates.length - 1; i++)
+{
+  // move line to correct temperature and date positions
+  ctx.lineTo(scale_x(dates[i]), scale_y(1*temp[i]))
+}
+
+// draw line graph
+ctx.stroke();
+
+// begin line path for vertical grid
+ctx.beginPath();
+
+// move to start
+ctx.moveTo(0, 0);
+
+// draw vertical grid line with 10 degrees added each time
+for (i = - 40; i <= 240; i += 8){
+  ctx.lineTo(0, scale_y(i));
+
+  // draw horizontal
+  ctx.lineTo(5, scale_y(i));
+
+  // write temperature
+  temperature = ctx.fillText(i, scale_x(5), scale_y(i));
+  // move back to vertical grid
+  ctx.moveTo(0, scale_y(i));
+}
+// draw horizontal grid line with 10 degrees added each time
+for (i = date_domain[0] - 1; i <= date_domain[1]; i += 15){
+  ctx.lineTo(scale_x(i), scale_y(0));
+
+  // draw vertical stripe
+  ctx.lineTo(scale_x(i), scale_y(5));
+
+  // write date
+  ctx.fillText(Math.round(i), scale_x(i), scale_y(10));
+
+  // move back to horizontal grid line
+  ctx.moveTo(scale_x(i), scale_y(0));
+}
+
+// draw
+ctx.stroke()
 
 
+// temp_difference_min_max = temp_min_max[1] - temp_min_max[0];
 
-// function createTransform(domain, range){
-// 	// domain is a two-element array of the data bounds [domain_min, domain_max]
-// 	// range is a two-element array of the screen bounds [range_min, range_max]
-// 	// this gives you two equations to solve:
-// 	// range_min = alpha * domain_min + beta
-// 	// range_max = alpha * domain_max + beta
+// // create vertical scale for grid
+// vertical_scale = ((canvas.height - 50) / temp_difference_min_max);
+// console.log(vertical_scale)
 //
-//     var domain_min = domain[]
-//     var domain_max = domain[1]
-//     var range_min = range[0]
-//     var range_max = range[1]
+// // create horizontal scale for grid
+// horizontal_scale = ((canvas.width - 50) / 365)
 //
-//     // formulas to calculate the alpha and the beta
-//    	var alpha = (range_max - range_min) / (domain_max - domain_min)
-//     var beta = range_max - alpha * domain_max
+// console.log(temp_difference_min_max)
 //
-//     // returns the function for the linear transformation (y= a * x + b)
-//     return function(x){
-//       return alpha * x + beta;
-//     }
+// // begin line path
+// ctx.beginPath();
+//
+// console.log(temp_min_max[1])
+// // move to start
+// ctx.moveTo(0, 0);
+//
+// // draw vertical grid line with 10 degrees added each time
+// for (i = temp_min_max[0]; i <= temp_min_max[1]; i += 16){
+//   ctx.lineTo(0, (vertical_scale * i) - (temp_min_max[0] * vertical_scale));
+//   ctx.lineTo(5, (vertical_scale * i) - (temp_min_max[0] * vertical_scale));
+//   ctx.fillText(i, 5, (vertical_scale * i) - (temp_min_max[0] * vertical_scale));
+//   console.log(vertical_scale * i);
+//   ctx.moveTo(0, (vertical_scale * i));
 // }
+//
+// // move to starting point horizontal grid line
+// ctx.moveTo(0, vertical_scale * (0 - temp_min_max[0]));
+//
+// // draw horizontal grid line with 10 degrees added each time
+// for (i = 0; i <= 365; i += 30){
+//   ctx.lineTo(horizontal_scale * i, vertical_scale * (0 - temp_min_max[0]));
+//   ctx.lineTo(horizontal_scale * i, vertical_scale * (0 - temp_min_max[0]) + 5);
+//   ctx.fillText(i,horizontal_scale * i, vertical_scale * (0 - temp_min_max[0]) + 10);
+//   ctx.moveTo(i, vertical_scale * (0 - temp_min_max[0]));
+// }
+//
+// ctx.stroke();
+//
+// // retrieved from https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
+// ctx.beginPath();
+//
+// // start of line graph
+// ctx.moveTo(horizontal_scale * date_min_max[0], vertical_scale * temp_min_max[0]);
+//
+// // iterate over arrays
+// for (i = 0; i < dates.length - 1; i++)
+// {
+//   // move line to correct temperature and date positions
+//   ctx.lineTo(horizontal_scale * dates[i], vertical_scale* temp[i])
+// }
+// // draw line graph
+// ctx.stroke();
