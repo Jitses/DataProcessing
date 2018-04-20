@@ -1,3 +1,9 @@
+/**
+ *    Jitse Schol
+ *    Data Processing
+ *    Week 2
+ */
+
 // retrieved from https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/onreadystatechange
 var xhr = new XMLHttpRequest(),
     method = "GET",
