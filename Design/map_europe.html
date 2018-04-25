@@ -1,0 +1,76 @@
+<!-- all code retrieved from http://datamaps.github.io/ -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script src="datainfo.js"></script>
+  <h2>Datamaps</h2>
+  <p><a href="http://datamaps.github.io/">DataMaps Project Homepage</a></p>
+  <div id="container1" style="position: relative; width: 80%; max-height: 450px;"></div>
+
+
+     <script>
+       //basic map config with custom fills, mercator projection
+      var map = new Datamap({
+        scope: 'world',
+        element: document.getElementById('container1'),
+        projection: 'mercator',
+        height: 500,
+        fills: {
+          defaultFill: 'white',
+					high: '#2171b5',
+					medium: '#6baed6',
+					low: '#bdd7e7',
+					very_low:'#eff3ff',
+					test: 'grey'
+        },
+
+        data: {
+          RUS: {fillKey: 'high'},
+					DEU: {fillKey: 'low'},
+					NLD: {fillKey: 'medium'},
+					ESP: {fillKey: 'test'},
+					PRT: {fillKey: 'test'},
+					FRA: {fillKey: 'test'},
+					DNK: {fillKey: 'test'},
+					GBR: {fillKey: 'test'},
+					IRL: {fillKey: 'test'},
+					CHE: {fillKey: 'test'},
+					NOR: {fillKey: 'test'},
+					SWE: {fillKey: 'test'},
+					FIN: {fillKey: 'test'},
+					POL: {fillKey: 'test'},
+					ITA: {fillKey: 'test'},
+					AUT: {fillKey: 'test'},
+					CZE: {fillKey: 'test'},
+					SVK: {fillKey: 'test'},
+					HUN: {fillKey: 'test'},
+					EST: {fillKey: 'test'},
+					LVA: {fillKey: 'test'},
+					LTU: {fillKey: 'test'},
+					GRC: {fillKey: 'test'},
+					BIH: {fillKey: 'test'},
+					HRV: {fillKey: 'test'},
+					MKD: {fillKey: 'test'},
+					SRB: {fillKey: 'test'},
+					TUR: {fillKey: 'test'},
+					UKR: {fillKey: 'test'},
+					MDA: {fillKey: 'test'},
+					ROU: {fillKey: 'test'},
+					BGR: {fillKey: 'test'},
+					BLR: {fillKey: 'test'},
+					BEL: {fillKey: 'test'},
+					MNE: {fillKey: 'test'},
+					SVN: {fillKey: 'test'},
+					ALB: {fillKey: 'test'}
+
+
+        }
+      })
+
+
+
+
+     </script>
+</body>

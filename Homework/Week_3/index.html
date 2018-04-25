@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+      <script type="text/javascript" src="d3/d3.v3.js"></script>
+
+      <!-- retrieved from http://bl.ocks.org/Caged/6476579 -->
+      <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+      <style>
+      .axis path, .axis line, .axis_x path, .axis_x line {
+          fill: none;
+          stroke: black;
+          shape-rendering: crispEdges;
+      }
+      .axis text{
+        font-family: sans-serif;
+        font-size: 11px;
+      }
+      .axis_x text{
+        display: none;
+      }
+
+      /* retrieved from http://bl.ocks.org/Caged/6476579 */
+      rect{
+        fill: orange;
+      }
+      rect:hover{
+        fill: blue
+      }
+
+      .d3-tip {
+        line-height: 1;
+        font-weight: bold;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2px;
+      }
+
+      /* Creates a small triangle extender for the tooltip */
+      .d3-tip:after {
+        box-sizing: border-box;
+        display: inline;
+        font-size: 10px;
+        width: 100%;
+        line-height: 1;
+        color: rgba(0, 0, 0, 0.8);
+        content: "\25BC";
+        position: absolute;
+        text-align: center;
+      }
+
+      /* Style northward tooltips differently */
+      .d3-tip.n:after {
+        margin: -1px 0 0 0;
+        top: 100%;
+        left: 0;
+      }
+      /* retrieved from https://css-tricks.com/snippets/css/text-rotation/ */
+      .y_axis_text {
+
+        /* Safari */
+        -webkit-transform: rotate(-90deg);
+
+        /* Firefox */
+        -moz-transform: rotate(-90deg);
+
+        /* IE */
+        -ms-transform: rotate(-90deg);
+
+        /* Opera */
+        -o-transform: rotate(-90deg);
+
+        /* Internet Explorer */
+        filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+
+        /* set position */
+        position: absolute;
+        left:-60px;
+        bottom: 400px;
+      }
+      </style>
+
+  </head>
+  <body>
+    <p>Jitse Schol </p>
+    <p>Student Number: 10781463</p>
+    <p>The graph shows the Gross Domestic Product (at current prices) of the top 10 countries sorted from high GDP to small GDP. Furthermore, it also shows the GDP of the world and the EU.</p>
+    <h2 style="margin-left: 350px; margin-bottom: -75px"> GDP Chart </h2>
+    <p class="y_axis_text">GDP (in billions US dollars)</p>
+    <script type="text/javascript">
+
+          // append title
+          d3.select("head").append("title").text("GDP Chart");
+
+          // retrieved from http://learnjsdata.com/read_data.html
+          d3.json("imf_gdp_json.json", function(dataset) {
+
+            // create SVG element, retrieved from http://alignedleft.com/tutorials/d3/making-a-bar-chart
+            var svg = d3.select("body")
+              .append("svg")
+
+              // set width svg
+              .attr("width", 1000)
+
+              // set height svg
+              .attr("height", 600);
+
+            // retrieved from http://bl.ocks.org/Caged/6476579
+            var tip = d3.tip()
+
+              // assign d3-tip class
+              .attr('class', 'd3-tip')
+
+              // set offset
+              .offset([-10, 0])
+
+              // write the information displayed with tip
+              .html(function(d) {
+                return "<strong>GDP:</strong> <span style='color:red'>" + d['GDP_current_prices'] + "</span>";
+              })
+
+            // call tip
+            svg.call(tip);
+
+            svg.selectAll("rect")
+
+              // use dataset
+              .data(dataset['data'])
+              .enter()
+
+              // append rectangle
+              .append("rect")
+              .attr("x", function(d, i) {
+
+                  // bar width of 20 plus 1 for padding
+                  return 80 + (i * 61);
+              })
+              .attr("y", function(d) {
+
+                  // scale by dividing data by 200
+                  return 500 - (d['GDP_current_prices'])/200;
+                })
+
+              // set width of bar to 60
+              .attr("width", 60)
+
+
+              .attr("height", function(d) {
+                  return (d['GDP_current_prices'])/200})
+
+              /* retrieved from http://bl.ocks.org/Caged/6476579,
+               * show tip when mouse hovers over element
+               */
+              .on('mouseover', tip.show)
+              // hide tip when mouse moves out
+              .on('mouseout', tip.hide)
+
+            svg.selectAll("text")
+              .data(dataset['data'])
+              .enter()
+
+              // append text
+              .append("text")
+              .text(function(d) {
+
+                  // write country name
+                  return d['Country'];
+              })
+
+              // set x position of text
+              .attr("x", function(d, i) {
+
+                  // for short country names, f.e. UK
+                  if ((d['Country'].length) < 3){
+
+                    // position text
+                    return (i * 61) + 98;
+                  }
+
+                  // for longer country names
+                  else
+                  {
+
+                  // position text
+                  return (i * 61) + 85;
+                }
+              })
+
+              // height of country name text
+              .attr("y", function(d) {
+                  return 520;
+                })
+
+          // set domain and range for x and y
+          var domain_min_x = 0;
+          var domain_max_x = 12;
+          var domain_min_y = 0;
+          var domain_max_y = 80000
+          var range_min_x = 80;
+          var range_max_x = 811;
+          var range_min_y = 500;
+          var range_max_y = 101;
+
+          // create x scale using x domain and x range
+          var xScale = d3.scale.linear()
+              .domain([domain_min_x, domain_max_x])
+              .range([range_min_x, range_max_x]);
+
+          // create y scale using y domain and y range
+          var yScale = d3.scale.linear()
+              .domain([domain_min_y, domain_max_y])
+              .range([range_min_y, range_max_y]);
+
+          var yAxis = d3.svg.axis()
+                  .scale(yScale)
+                  .orient("left")
+                  .ticks(5);
+
+          var xAxis = d3.svg.axis()
+                  .scale(xScale)
+                  .orient("bottom")
+
+          // append x axis
+          svg.append("g")
+
+            // use axis_x class
+            .attr("class", "axis_x")
+
+            // transform x axis
+            .attr("transform", "translate(0, " + (500) + ")")
+
+            // call x axis
+            .call(xAxis);
+
+          // append y axis
+          svg.append("g")
+
+            // use axis class
+            .attr("class", "axis")
+
+            // transform y axis
+            .attr("transform", "translate(" + 80 +", 0)")
+
+            // call y axis
+            .call(yAxis);
+
+          // append paragraph with source
+          d3.select("body").append("p").html("The data was retrieved from the <a href='http://www.imf.org/external/datamapper/NGDPD@WEO/OEMDC/ADVEC/WEOWORLD'>International Monetary Fund</a>");
+
+          });
+      </script>
+  </body>
+</html>
