@@ -1,27 +1,36 @@
-# retrieved from https://stackoverflow.com/questions/19697846/how-to-convert-csv-file-to-multiline-json
+#
+# Jitse Schol
+# Student Number: 10781463
+# Data Processing week 3
+#
+
+# Retrieved from https://stackoverflow.com/questions/19697846/how-to-convert-csv-file-to-multiline-json
 import csv
 import json
 
-# open csv file in reading mode
-csvfile = open('top20.csv', 'r')
+# Open csv file in reading mode
+csvfile = open('top10.csv', 'r')
 
-# open JSON file in writing mode
+# Open JSON file in writing mode
 jsonfile = open('imf_gdp_json.json', 'w')
 
+# Set fieldnames
 fieldnames = ("Country", "GDP_current_prices")
 
+# Initiate reader
 reader = csv.DictReader(csvfile, fieldnames)
 
-# create empty list
+# Create empty list
 data_list = [];
 
-# go over rows in csvfile
+# Go over rows in csvfile
 for row in reader:
 
-    # append to data list
+    # Append to data list
     data_list.append(row);
 
+# Initiate dictionary
 data_dict = {'data': data_list[0:]}
 
-# dump to json file in json format
+# Dump to json file in json format
 json.dump(data_dict, jsonfile)

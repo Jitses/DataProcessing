@@ -1,3 +1,12 @@
+<!--
+Jitse Schol
+Student Number: 10781463
+Data Processing Week 3
+Most of the javascript code was retrieved from the d3 tutorial by Scott Murray
+from http://alignedleft.com/tutorials/d3/adding-elements , after which it was altered
+to fit this dataset and to my preferred layout.
+-->
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -8,15 +17,21 @@
       <!-- retrieved from http://bl.ocks.org/Caged/6476579 -->
       <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
       <style>
+
+      /* style of axis */
       .axis path, .axis line, .axis_x path, .axis_x line {
           fill: none;
           stroke: black;
           shape-rendering: crispEdges;
       }
+
+      /* style of axis text */
       .axis text{
         font-family: sans-serif;
         font-size: 11px;
       }
+
+      /* style of x axis text */
       .axis_x text{
         display: none;
       }
@@ -38,7 +53,7 @@
         border-radius: 2px;
       }
 
-      /* Creates a small triangle extender for the tooltip */
+      /* creates a small triangle extender for the tooltip */
       .d3-tip:after {
         box-sizing: border-box;
         display: inline;
@@ -57,7 +72,10 @@
         top: 100%;
         left: 0;
       }
-      /* retrieved from https://css-tricks.com/snippets/css/text-rotation/ */
+      /*
+       * retrieved from https://css-tricks.com/snippets/css/text-rotation/
+       * rotates text
+       */
       .y_axis_text {
 
         /* Safari */
@@ -78,7 +96,7 @@
         /* set position */
         position: absolute;
         left:-60px;
-        bottom: 400px;
+        bottom: 55%;
       }
       </style>
 
@@ -89,6 +107,7 @@
     <p>The graph shows the Gross Domestic Product (at current prices) of the top 10 countries sorted from high GDP to small GDP. Furthermore, it also shows the GDP of the world and the EU.</p>
     <h2 style="margin-left: 350px; margin-bottom: -75px"> GDP Chart </h2>
     <p class="y_axis_text">GDP (in billions US dollars)</p>
+
     <script type="text/javascript">
 
           // append title
@@ -124,6 +143,7 @@
             // call tip
             svg.call(tip);
 
+            // select all rectangles
             svg.selectAll("rect")
 
               // use dataset
@@ -134,19 +154,19 @@
               .append("rect")
               .attr("x", function(d, i) {
 
-                  // bar width of 20 plus 1 for padding
+                  // set x position of bar chart
                   return 80 + (i * 61);
               })
               .attr("y", function(d) {
 
-                  // scale by dividing data by 200
+                  // set y position of bar chart
                   return 500 - (d['GDP_current_prices'])/200;
                 })
 
               // set width of bar to 60
               .attr("width", 60)
 
-
+              // set height of bar
               .attr("height", function(d) {
                   return (d['GDP_current_prices'])/200})
 
@@ -154,6 +174,7 @@
                * show tip when mouse hovers over element
                */
               .on('mouseover', tip.show)
+
               // hide tip when mouse moves out
               .on('mouseout', tip.hide)
 
@@ -213,13 +234,25 @@
               .domain([domain_min_y, domain_max_y])
               .range([range_min_y, range_max_y]);
 
+          // create y axis
           var yAxis = d3.svg.axis()
+
+                  // use y scale
                   .scale(yScale)
+
+                  // set orient
                   .orient("left")
+
+                  // set ticks
                   .ticks(5);
 
+          // create x axis
           var xAxis = d3.svg.axis()
+          
+                  // use x scale
                   .scale(xScale)
+
+                  // set orient
                   .orient("bottom")
 
           // append x axis
