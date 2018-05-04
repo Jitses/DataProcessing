@@ -3,8 +3,8 @@
  *  Data Processing
  *  10781463
  *  Creates scatter plot
- *  API laadt niet altijd goed. Dit komt door de API zelf. Tim zei daarom dat
- *  prima was als ik de bestanden lokaal gebruik, mocht de API niet goed inladen.
+ *  API laadt niet altijd goed. Dit komt door de API zelf en ik kan hier dus niets aan doen.
+ *  Tim zei daarom dat prima was als ik de data in local files gebruik, mocht de API niet goed inladen.
  */
 
 window.onload = function() {
