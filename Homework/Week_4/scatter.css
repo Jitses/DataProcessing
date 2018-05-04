@@ -1,0 +1,118 @@
+/* Jitse Schol
+Student number: 10781463
+Data Processing Week 4
+Scatterplot
+This graph shows the correlation of the monthly change (Dec 2012-Dec 2016) in
+price of the Amazon stock and three tech stocks. */
+
+.svg{
+  background-color: lightblue;
+  margin-left: 30px;
+  margin-top: 50px;
+  padding-top: 40px;
+  padding-left: 100px;
+  padding-right: 86px;
+  padding-bottom: 40px;
+}
+h1{
+  margin-right: 300px;
+}
+#top{
+  background-color: lightblue;
+  margin-top: -100px;
+  margin-left: 30px;
+  width: 1186px;
+}
+
+#top_text, #legend{
+  width: 1000px;
+  padding-top: 80px;
+  padding-bottom: 10px;
+  margin-right: 0px;
+
+}
+#top_text{
+  margin-left: 30px;
+  padding-left: 100px;
+  margin-bottom: -100px;
+}
+
+#legend{
+  width: 50%;
+  margin-left: 540px;
+  padding-right: -100px;
+  background-color: lightblue;
+  margin-bottom: -66px;
+}
+#apple, #msfx, #amzn, #nflx{
+  width: 15px;
+  height: 15px;
+  list-style-type: none;
+  display: inline-block;
+  margin-left: 80px;
+}
+#apple{
+  color: #984ea3;
+  background-color: #984ea3;
+}
+#msfx{
+  color: #377eb8;
+  background-color: #377eb8;
+}
+
+#nflx{
+  color: #e41a1c;
+  background-color: #e41a1c;
+}
+.legend_text{
+  list-style-type: none;
+  display: inline-block;
+}
+
+/* Drop down menu css etrieved from https://www.w3schools.com/howto/howto_js_dropdown.asp
+   Dropdown Button */
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    top: 150px;
+    left: 850px;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+}
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}

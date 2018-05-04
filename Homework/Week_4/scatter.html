@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<!-- Jitse Schol
+Student number: 10781463
+Data Processing Week 4
+Scatterplot
+This graph shows the correlation of the monthly change (Dec 2012-Dec 2016) in
+price of the Amazon stock and three tech stocks.
+-->
+
+<head>
+  <title>Scatter</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="scatter.css">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+
+  <!-- retrieved from https://github.com/d3/d3-axis -->
+  <script src="https://d3js.org/d3-axis.v1.min.js"></script>
+  <script src="scatter.js"></script>
+
+
+<body>
+  <!-- Retrieved from https://www.w3schools.com/howto/howto_js_dropdown.asp -->
+
+  <div id="top">
+    <div class="dropdown">
+      <button onclick="dropDownFunction()" class="dropbtn">Dataset</button>
+      <div id="myDropdown" class="dropdown-content">
+        <button onclick="stock_click()" class="all">All</button>
+        <button onclick="stock_click()" class="Apple">Apple - Amazon</button>
+        <button onclick="stock_click()" class="Microsoft">Microsoft - Amazon</button>
+        <button onclick="stock_click()" class="Netflix">Netflix - Amazon</button>
+      </div>
+    </div>
+    <div id="top_text">
+        <h1> Jitse Schol </h1>
+        <h1> Amazon Stock Correlation Scatter Plot </h1>
+        <p>This graph shows the correlation of the monthly change (Dec 2012-Dec 2016) in
+          price of the Amazon stock and three tech stocks.</p>
+        <p> Source: Quandl </p>
+        <p> y-axis: Amazon price monthly change in decimals
+        <p> x-axis: Stock price monthly change in decimals
+    </div>
+    <div id="legend">
+
+      <ul>
+        <li id="apple">.</li>
+        <li class="legend_text">Apple</li>
+        <li id="msfx">.</li>
+        <li class="legend_text">Microsoft</li>
+        <li id="nflx">.</li>
+        <li class="legend_text">Netflix</li>
+      </ul>
+     </div>
+  </div>
+</body>
