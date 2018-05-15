@@ -1,4 +1,9 @@
 
+body{
+  height: 1400px;
+}
+
+
 /* https://bl.ocks.org/mbostock/3887235 */
 .arc text {
   font: 10px sans-serif;
@@ -7,4 +12,32 @@
 
 .arc path {
   stroke: #fff;
+}
+
+#pieHidden{
+  display: none;
+}
+.legend ul{
+  list-style: none;
+  display: inline-block;
+}
+.legend li{
+  display: inline;
+  margin-right: 5px;
+}
+#quantile1_legend, #quantile2_legend, #quantile3_legend, #quantile4_legend{
+  padding: 5px 10px 0px 10px;
+  width: 15px;
+}
+#quantile1_legend{
+  background-color: #ff2626;
+}
+#quantile2_legend{
+  background-color: #dd1652;
+}
+#quantile3_legend{
+  background-color:#870675;
+}
+#quantile4_legend{
+  background-color: #440cb4;
 }

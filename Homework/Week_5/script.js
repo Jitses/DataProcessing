@@ -129,72 +129,74 @@ window.onload = function(){
                         quartile4 += 1
                     };
                 };
-                  return quartile1, quartile2, quartile3, quartile4
+                  return [quartile1, quartile2, quartile3, quartile4]
                 }
 
                 /* Creates pie chart showing the different age groups of billionaries in
                  * percentages.
                  * Retrieved from http://bl.ocks.org/kiranml1/6872886
                  */
-                function create_pie_chart(quartile1, quartile2, quartile3, quartile4){
+                function create_pie_chart(country){
 
-                    // create pie div
-                    '<div id="pie"></div>'
+                  var quarts = calculate_age_quartiles(country)
+                  console.log(quarts);
 
-                    var canvas = d3.select('#pie')
-                						.append('svg')
-                						.attr({'width':650,'height':500});
+                  d3.select("#pie").html("");
 
-                		var data = [{"label":"one", "value": quartile1},
-                            {"label":"two", "value": quartile2},
-                            {"label":"three", "value": quartile3},
-                            {"label":"four", "value": quartile4},];
+                  var canvas = d3.select('#pie')
+                            .append('svg')
+                            .attr({'width':650,'height':1100});
+
+                    var data = [{"label":"one", "value": quarts[0]},
+                            {"label":"two", "value": quarts[1]},
+                            {"label":"three", "value": quarts[2]},
+                            {"label":"four", "value": quarts[3]},];
 
                             var colors = ['red','blue'];
 
                             var colorscale = d3.scale.linear().domain([0,data.length]).range(colors);
 
-                		var arc = d3.svg.arc()
-                						.innerRadius(0)
-                						.outerRadius(100);
+                    var arc = d3.svg.arc()
+                            .innerRadius(0)
+                            .outerRadius(100);
 
-                		var arcOver = d3.svg.arc()
-                						.innerRadius(0)
-                        				.outerRadius(150 + 10);
+                    var arcOver = d3.svg.arc()
+                            .innerRadius(0)
+                            .outerRadius(150 + 10);
 
-                		var pie = d3.layout.pie()
-                						.value(function(d){ return d.value; });
+                    var pie = d3.layout.pie()
+                            .value(function(d){ return d.value; });
 
-                		var renderarcs = canvas.append('g')
-                						.attr('transform','translate(440,200)')
-                						.selectAll('.arc')
-                						.data(pie(data))
-                						.enter()
-                						.append('g')
-                						.attr('class',"arc");
+                    var renderarcs = canvas.append('g')
+                            .attr('transform','translate(175,100)')
+                            .selectAll('.arc')
+                            .data(pie(data))
+                            .enter()
+                            .append('g')
+                            .attr('class',"arc");
 
-                		renderarcs.append('path')
-                				.attr('d',arc)
-                				.attr('fill',function(d,i){ return colorscale(i); })
-                				.on("mouseover", function(d) {
-                		            	d3.select(this).transition()
-                			               .duration(1000)
-                			               .attr("d", arcOver);
-                		             })
-                				.on("mouseout", function(d) {
-                		            	d3.select(this).transition()
-                			               .duration(1000)
-                			               .attr("d", arc);
-                		             });
+                    renderarcs.append('path')
+                        .attr('d',arc)
+                        .attr('fill',function(d,i){ return colorscale(i); })
 
-                		renderarcs.append('text')
-                				.attr('transform',function(d) {
-                						var c = arc.centroid(d);
-                						console.log(c);
-                            			return "translate(" + c[0] +"," + c[1]+ ")";
-                             		})
-                				.text(function(d){ return d.value+"%"; });
-                }
+                    renderarcs.append('text')
+                        .attr('transform',function(d) {
+                            if (d.value == 0){
+                              d.value = ""
+                            }
+                            var c = arc.centroid(d);
+                                  return "translate(" + c[0] +"," + c[1]+ ")";
+                                })
+
+                        .text(function(d){ return d.value; });
+
+                        if (quarts[0] == 0 && quarts[1] == 0 && quarts[2] == 0 && quarts[3] == 0){
+                          d3.select("#pie").html("No billionaires");
+                        }
+
+
+                        return d3.select("#pie").node().innerHTML;
+                  }
 
                 // retrieves GDP of country
                 function GDP(country){
@@ -207,14 +209,21 @@ window.onload = function(){
                   // if no data is available
                   return "No GDP Data"
                 };
-
-                  return ['<div class="hoverinfo"><strong>',
+                  // https://www.w3schools.com/jsref/met_node_appendchild.asp
+                  return ['<div id="hoverinfo" style= "color: white; background-color: black; position: relative; width:350px; height:400px;">',
+                          'GDP (billions US dollars): ' + GDP(geo.properties.name), '<br>'
+                          +
                           'Number of billionaires in ' + geo.properties.name,
-                          ': ' + billionaire_counter(geo.properties.name), '<br>' +
-                          'GDP (billions US dollars): ' + GDP(geo.properties.name),
+                          ': ' + billionaire_counter(geo.properties.name) +
                           '<br>' +
-                          create_pie_chart(calculate_age_quartiles(geo.properties.name))
-                          +'</strong></div>'].join('');
+                          'Number of billionaires in different age groups:' + '<br>' +
+                          '<ul class="legend">' +
+                          '<li id="quantile1_legend"></li><li class="legend_text">0-25<li>' +
+                          '<li id="quantile2_legend"></li><li class="legend_text">26-50<li>' +
+                          '<li id="quantile3_legend"></li><li class="legend_text">51-75<li>' +
+                          '<li id="quantile4_legend"></li><li class="legend_text">76-100<li>' +
+                          '</ul>' + create_pie_chart(geo.properties.name) +
+                          '</div>'].join('');
       }
     }
   });
