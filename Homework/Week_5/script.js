@@ -201,7 +201,7 @@ window.onload = function(){
         // https://stackoverflow.com/questions/40423615/dynamically-updating-datamaps-fill-color-not-working-using-variable-as-country-k
         var color = colorinput
         var country_color = {};
-        var country_color[country_code] = color
+        country_color[country_code] = color
 
         // https://github.com/markmarkoh/datamaps/releases/tag/v0.2.2
         map.updateChoropleth(country_color);
