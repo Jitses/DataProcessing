@@ -1,6 +1,13 @@
-<!-- all code retrieved from http://datamaps.github.io/ -->
-<!-- This code was used during the design project for Data Processing -->
-<!-- billionaires csv dataset 2015 https://raw.githubusercontent.com/richard512/Little-Big-Data/master/top1000billionaires.csv -->
+<!--
+  Jitse Schol
+  Data Processing
+  Student Number: 10781463
+  18-5-2018
+-->
+
+<!-- most code retrieved from http://datamaps.github.io/ -->
+<!-- Some code was also used during the design project for Data Processing -->
+<!-- Billionaires csv dataset 2015 https://raw.githubusercontent.com/richard512/Little-Big-Data/master/top1000billionaires.csv -->
 <!DOCTYPE html>
 <head>
   <meta charset="utf-8">
@@ -14,8 +21,49 @@
   <script src="script.js"></script>
 </head>
 <body>
+  <!-- https://www.w3schools.com/bootstrap4/bootstrap_dropdowns.asp
+  div for dropdown box -->
+  <div class="dropdown">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+      World Map Description
+    </button>
+    <div class="dropdown-menu" style="width: 350px;">
+      <p>The world map dataset consists of the top 1000 billionaires worldwide.
+        The colouring on the map shows the Gross Domestic Product (GDP) of the countries.
+        When you hover over a country, the number of billionaires (from the top 1000) in
+        that country are shown, along with the number of billionaires in different age groups.
+        The map and hover option are useful together, because you can easily see whether countries
+        with a high GDP have more billionaires. Furthermore, a user can change the colour theme of
+        the map either to blue or green.
+      </p>
+    </div>
+  </div>
 
-  <h2>Number of billionaires (in top 1000) and GDP per country</h2>
+  <!-- title of map -->
+  <h1 style="margin-left: 450px; margin-top: 10px;"> Billionaires and GDP World Map </h1>
+
+  <!-- div for the green and blue theme buttons -->
+  <div class="buttons">
+
+    <!-- https://www.w3schools.com/bootstrap/bootstrap_buttons.asp -->
+    <button id="green_button" type="button" class="btn btn-green" style="background-color:#006d2c; color: white;" >Green Theme</button>
+    <button id="blue_button" type="button" class="btn btn-blue" style="background-color:#08519c; color: white;">Blue Theme</button>
+  </div>
+
+  <!-- unordered list for the legend of the GDP of countries -->
+  <ul class="legend_gdp">
+    <li style="margin-right: 10px">GDP (in billion dollars): </li>
+    <li id="no_data"></li>
+    <li class="legend_text">No GDP data</li>
+    <li id="very_low_gdp"></li>
+    <li class="legend_text"> < 1000 <li>
+    <li id="low_gdp"></li>
+    <li class="legend_text"> < 5000 <li>
+    <li id="medium_gdp"></li>
+    <li class="legend_text"> < 10000<li>
+    <li id="high_gdp"></li>
+    <li class="legend_text"> < 25000<li>
+  </ul>
 
   <!-- https://www.w3schools.com/bootstrap/default.asp -->
   <div class="container">
@@ -25,11 +73,12 @@
         <div id="pieHidden">
           <div id="pie"></div>
         </div>
-
       </div>
     </div>
   </div>
-
+  <a href="https://raw.githubusercontent.com/richard512/Little-Big-Data/master/top1000billionaires.csv"> Billionaires Top 1000 dataset </a>
+  <p> The GDP data was retrieved from the International Monetary Fund </p>
+  <p> The map was made with datamaps </p>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>

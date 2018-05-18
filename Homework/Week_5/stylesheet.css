@@ -1,8 +1,16 @@
-
+/*
+ * Jitse Schol
+ * Data Processing
+ * Student Number: 10781463
+ * 18-5-2018
+ */
+ 
 body{
   height: 1400px;
 }
-
+.container{
+  margin-top: 5%
+}
 
 /* https://bl.ocks.org/mbostock/3887235 */
 .arc text {
@@ -17,15 +25,31 @@ body{
 #pieHidden{
   display: none;
 }
-.legend ul{
+.legend ul, .legend_gdp ul{
   list-style: none;
   display: inline-block;
 }
-.legend li{
+.legend li, .legend_gdp li{
   display: inline;
   margin-right: 5px;
 }
-#quantile1_legend, #quantile2_legend, #quantile3_legend, #quantile4_legend{
+.legend_gdp{
+  margin-bottom: 10px;
+  position: absolute;
+  left: 30%;
+}
+
+.buttons{
+  position: absolute;
+  left: 20%;
+  top: 0;
+}
+.dropdown-item p{
+  text-align: left;
+}
+
+#quantile1_legend, #quantile2_legend, #quantile3_legend, #quantile4_legend,
+#very_low_gdp, #low_gdp, #medium_gdp, #high_gdp, #no_data{
   padding: 5px 10px 0px 10px;
   width: 15px;
 }
@@ -36,8 +60,23 @@ body{
   background-color: #dd1652;
 }
 #quantile3_legend{
-  background-color:#870675;
+  background-color: #870675;
 }
 #quantile4_legend{
   background-color: #440cb4;
+}
+#very_low_gdp{
+  background-color:#bdd7e7;
+}
+#low_gdp{
+  background-color: #6baed6;
+}
+#medium_gdp{
+  background-color: #3182bd;
+}
+#high_gdp{
+  background-color: #08519c;
+}
+#no_data{
+  background-color: #f7f7f7;
 }

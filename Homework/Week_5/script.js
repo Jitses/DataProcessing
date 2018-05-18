@@ -1,7 +1,9 @@
-// Pie chart does not work yet
-// Plan is that when a user hovers over a country, the number of billionaires
-// in that country is displayed, the GDP and a pie chart showing the different
-// age groups of billionaires.
+/*
+ * Jitse Schol
+ * Data Processing
+ * Student Number: 10781463
+ * 18-5-2018
+ */
 
 window.onload = function(){
 
@@ -11,6 +13,7 @@ window.onload = function(){
     .defer(d3.json, 'imf_gdp.json')
     .awaitAll(data);
 
+  // uses response of data
   function data(error, response){
     var dataset_billionaires = response[0]['data']
     var dataset_GDP = response[1]['data']
@@ -22,54 +25,8 @@ window.onload = function(){
       projection: 'mercator',
       height: 800,
       fills: {
-        defaultFill: 'blue',
-        high: '#2171b5',
-        medium: '#6baed6',
-        low: '#bdd7e7',
-        very_low:'#eff3ff',
-        test: 'blue',
+        defaultFill: '#E8E8E8',
       },
-
-      data: {
-         RUS: {fillKey: 'test'},
-         DEU: {fillKey: 'low'},
-         NLD: {fillKey: 'medium'},
-         ESP: {fillKey: 'test'},
-         PRT: {fillKey: 'test'},
-         FRA: {fillKey: 'test'},
-         DNK: {fillKey: 'test'},
-         GBR: {fillKey: 'test'},
-         IRL: {fillKey: 'test'},
-         CHE: {fillKey: 'test'},
-         NOR: {fillKey: 'test'},
-         SWE: {fillKey: 'test'},
-         FIN: {fillKey: 'test'},
-         POL: {fillKey: 'test'},
-         ITA: {fillKey: 'test'},
-         AUT: {fillKey: 'test'},
-         CZE: {fillKey: 'test'},
-         SVK: {fillKey: 'test'},
-         HUN: {fillKey: 'test'},
-         EST: {fillKey: 'test'},
-         LVA: {fillKey: 'test'},
-         LTU: {fillKey: 'test'},
-         GRC: {fillKey: 'test'},
-         BIH: {fillKey: 'test'},
-         HRV: {fillKey: 'test'},
-         MKD: {fillKey: 'test'},
-         SRB: {fillKey: 'test'},
-         TUR: {fillKey: 'test'},
-         UKR: {fillKey: 'test'},
-         MDA: {fillKey: 'test'},
-         ROU: {fillKey: 'test'},
-         BGR: {fillKey: 'test'},
-         BLR: {fillKey: 'test'},
-         BEL: {fillKey: 'test'},
-         MNE: {fillKey: 'test'},
-         SVN: {fillKey: 'test'},
-         ALB: {fillKey: 'test'}
-       },
-       // https://github.com/markmarkoh/datamaps
 
        geographyConfig: {
               popupTemplate: function(geo, data) {
@@ -80,7 +37,7 @@ window.onload = function(){
                 function billionaire_counter(country){
 
                   // initiate counter
-                  billionaire_counter = 0
+                  var billionaire_counter = 0
 
                   // loop over dataset
                   for(i = 0; i < dataset_billionaires.length; i++){
@@ -138,16 +95,19 @@ window.onload = function(){
                  */
                 function create_pie_chart(country){
 
+                  // store quartiles in quarts
                   var quarts = calculate_age_quartiles(country)
-                  console.log(quarts);
+
 
                   d3.select("#pie").html("");
 
+                  // create canvas
                   var canvas = d3.select('#pie')
                             .append('svg')
                             .attr({'width':650,'height':1100});
 
-                    var data = [{"label":"one", "value": quarts[0]},
+                  // initiate data, which are the different elements of quarts
+                  var data = [{"label":"one", "value": quarts[0]},
                             {"label":"two", "value": quarts[1]},
                             {"label":"three", "value": quarts[2]},
                             {"label":"four", "value": quarts[3]},];
@@ -156,29 +116,29 @@ window.onload = function(){
 
                             var colorscale = d3.scale.linear().domain([0,data.length]).range(colors);
 
+                    // set inner and outer radius
                     var arc = d3.svg.arc()
                             .innerRadius(0)
                             .outerRadius(100);
 
-                    var arcOver = d3.svg.arc()
-                            .innerRadius(0)
-                            .outerRadius(150 + 10);
-
                     var pie = d3.layout.pie()
                             .value(function(d){ return d.value; });
 
+                    // render arcs
                     var renderarcs = canvas.append('g')
-                            .attr('transform','translate(175,100)')
+                            .attr('transform','translate(175, 100)')
                             .selectAll('.arc')
                             .data(pie(data))
                             .enter()
                             .append('g')
                             .attr('class',"arc");
 
+                    // fill pie with colours
                     renderarcs.append('path')
                         .attr('d',arc)
                         .attr('fill',function(d,i){ return colorscale(i); })
 
+                    // append text
                     renderarcs.append('text')
                         .attr('transform',function(d) {
                             if (d.value == 0){
@@ -187,14 +147,13 @@ window.onload = function(){
                             var c = arc.centroid(d);
                                   return "translate(" + c[0] +"," + c[1]+ ")";
                                 })
-
+                        .attr('fill', 'white')
+                        .style('font-size', '15px')
                         .text(function(d){ return d.value; });
 
                         if (quarts[0] == 0 && quarts[1] == 0 && quarts[2] == 0 && quarts[3] == 0){
                           d3.select("#pie").html("No billionaires");
                         }
-
-
                         return d3.select("#pie").node().innerHTML;
                   }
 
@@ -206,10 +165,13 @@ window.onload = function(){
                       return dataset_GDP[i]['GDP']
                     }
                   }
+
                   // if no data is available
                   return "No GDP Data"
                 };
+
                   // https://www.w3schools.com/jsref/met_node_appendchild.asp
+                  // create info div with all necessary information in it when user hovers over country
                   return ['<div id="hoverinfo" style= "color: white; background-color: black; position: relative; width:350px; height:400px;">',
                           'GDP (billions US dollars): ' + GDP(geo.properties.name), '<br>'
                           +
@@ -226,6 +188,97 @@ window.onload = function(){
                           '</div>'].join('');
       }
     }
+
   });
-};
+
+  // updates colors, used in the different color themes
+  function color_updater(colorinput){
+    var countries = Datamap.prototype.worldTopo.objects.world.geometries;
+    for (var j = 0; j < countries.length; j++) {
+      if (countries[j].properties.name == dataset_GDP[i]["Country"]){
+        var country_code = countries[j].id
+
+        // https://stackoverflow.com/questions/40423615/dynamically-updating-datamaps-fill-color-not-working-using-variable-as-country-k
+        var color = colorinput
+        var country_color = {};
+        var country_color[country_code] = color
+
+        // https://github.com/markmarkoh/datamaps/releases/tag/v0.2.2
+        map.updateChoropleth(country_color);
+      }
+    }
+  }
+
+  // this function is activated as default on load and when the user clicks the blue theme button
+  function blue_theme(){
+
+    // https://stackoverflow.com/questions/25044145/datamaps-get-list-of-country-codes
+
+    for (i = 0; i < dataset_GDP.length; i++){
+      // very low GDP
+      if (dataset_GDP[i]["GDP"] < 1000){
+        color_updater("#bdd7e7")
+      }
+      // low GDP
+      else if (dataset_GDP[i]["GDP"] < 5000){
+        color_updater("#6baed6")
+      }
+      // medium GDP
+      else if (dataset_GDP[i]["GDP"] < 10000){
+        color_updater("#3182bd")
+      }
+      // high GDP
+      else if (dataset_GDP[i]["GDP"] < 25000){
+        color_updater("#08519c")
+      }
+    }
+    document.getElementById("no_data").style.backgroundColor = "#E8E8E8";
+    document.getElementById("very_low_gdp").style.backgroundColor = "#bdd7e7";
+    document.getElementById("low_gdp").style.backgroundColor = "#6baed6";
+    document.getElementById("medium_gdp").style.backgroundColor = "#3182bd";
+    document.getElementById("high_gdp").style.backgroundColor = "#08519c";
+  }
+
+    // call blue theme function
+    blue_theme()
+
+    // updates the screen to a green theme
+    function green_theme(){
+
+      // https://stackoverflow.com/questions/25044145/datamaps-get-list-of-country-codes
+      var countries = Datamap.prototype.worldTopo.objects.world.geometries;
+      for (i = 0; i < dataset_GDP.length; i++){
+        // very low GDP
+        if (dataset_GDP[i]["GDP"] < 1000){
+          color_updater("#bae4b3")
+        }
+        // low GDP
+        else if (dataset_GDP[i]["GDP"] < 5000){
+          color_updater("#74c476")
+        }
+        // medium GDP
+        else if (dataset_GDP[i]["GDP"] < 10000){
+          color_updater("#31a354")
+        }
+        // high GDP
+        else if (dataset_GDP[i]["GDP"] < 25000){
+          color_updater("#006d2c")
+        }
+      }
+      document.getElementById("no_data").style.backgroundColor = "#E8E8E8";
+      document.getElementById("very_low_gdp").style.backgroundColor = "#bae4b3";
+      document.getElementById("low_gdp").style.backgroundColor = "#74c476";
+      document.getElementById("medium_gdp").style.backgroundColor = "#31a354";
+      document.getElementById("high_gdp").style.backgroundColor = "#006d2c";
+    }
+
+    // https://stackoverflow.com/questions/14425397/onclick-function-runs-automatically
+    function update(){
+      document.getElementById("blue_button").onclick = function(){
+        blue_theme()}
+      document.getElementById("green_button").onclick = function(){
+        green_theme()}
+    }
+    update()
+  };
 }
